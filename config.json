@@ -1,0 +1,10 @@
+{
+    "server" : "192.168.00.00",
+    "database" : "yourdb",
+    "username" : "youruser",
+    "password" : "yourpass",
+    "ZENDESK_USER" : "yourmail@mail.com/token",
+    "ZENDESK_TOKEN" : "yourtoken",
+    "ZENDESK_URL": "https://yoursitename.zendesk.com/"
+
+}
