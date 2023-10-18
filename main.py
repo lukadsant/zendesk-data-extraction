@@ -36,7 +36,11 @@ while True:
         print("Entrada inválida. Tente novamente.")
 
 
-url = zendesk_url + f'/api/v2/{modulo}.json'
+if modulo== "tickets":
+
+    url = zendesk_url + f'/api/v2/incremental/tickets.json?start_time=1615821979&include=metric_sets'
+else:
+    url = zendesk_url + f'/api/v2/{modulo}.json'
 
 listaComDados = []
 
