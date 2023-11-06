@@ -22,13 +22,29 @@ def bulkinsert(dados,modulo):
         print(f"Atualização de dados completa!, {num_records} grupos foram inseridos no banco.")
 
     elif modulo == 'tickets':
-        # Convert list of dictionaries to list of tuples
-        tickets_tuples = [(
-                          ticket['id'], ticket['status'], ticket['subject'], ticket['group_id'], ticket['requester_id'],
-                          ticket['submitter_id'], ticket['created_at'], ticket['updated_at'], ticket['assignee_id']) for
-                          ticket in dados]
+        #"listaDeTipos" com os IDs a serem filtrados
+        listaDeTipos=[1500002350461,1900002214785,1900002214805,1500002350501,1500002391482,1500002391542]
 
-        sqlTicket = "INSERT INTO zentickets (Id, Status,Assunto,Grupo, Solicitante,Atribuido,Criado_Em,Finalizado_Em,finalizado) VALUES (?, ?, ?, ?, ?, ?,?,?,?)"
+        tickets_tuples = []
+
+        for ticket in dados:
+            # Filtra a lista custom_fields com base nos IDs em listaDeTipos
+            filtered_custom_fields = [field for field in ticket['custom_fields'] if field['id'] in listaDeTipos and field['value'] is not None]
+            
+            # Verifica se a lista filtrada não está vazia
+            if filtered_custom_fields:
+                # Adiciona os dados do ticket à lista de tuplas
+                tickets_tuples.append(
+                    (
+                        ticket['id'], ticket['status'], ticket['subject'], ticket['group_id'],
+                        ticket['requester_id'], ticket['submitter_id'], ticket['created_at'],
+                        ticket['updated_at'], ticket['assignee_id'],
+                        ticket['satisfaction_rating']['score'],
+                        filtered_custom_fields[0]['value'] # Adiciona a lista filtrada de custom_fields
+                    )
+                )
+
+        sqlTicket = "INSERT INTO zentickets (Id_Ticket, Status,Assunto,Id_Grupo, Solicitante,Id_Usuario,Criado_Em,Finalizado_Em,Finalizador,Satisfacao, Tipo_Solitacao) VALUES (?, ?, ?, ?, ?, ?,?,?,?,?,?)"
         cursor.execute("TRUNCATE TABLE zentickets")
         cursor.executemany(sqlTicket, tickets_tuples)
         cnxn.commit()
