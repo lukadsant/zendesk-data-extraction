@@ -1,4 +1,4 @@
-from main import *
+from requester import *
 print(f'-Leitura conluida, iniciando a Atualização de dados do modulo {modulo}...')
 
 def bulkinsert(dados,modulo):
